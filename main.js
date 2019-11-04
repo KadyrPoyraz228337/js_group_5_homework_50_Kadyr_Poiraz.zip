@@ -27,13 +27,7 @@ class CaloriesCalculator {
         this.dishes = {};
     }
     addDish(dish) {
-        const dishTitle = dish.title;
-        if(dish.title in this.dishes) {
-            this.dishes[dishTitle][0] += 1;
-        } else {
-            const ingArr = dish.products;
-            this.dishes[dishTitle] = [1, dish.calories, ingArr];
-        }
+        dish.title in this.dishes ? this.dishes[dish.title][0] += 1 : this.dishes[dish.title] = [1, dish.calories, dish.products];
     }
     getTotalCalories() {
         let calories = 0;
@@ -43,7 +37,6 @@ class CaloriesCalculator {
         return calories;
     }
     getAllDishesInfo() {
-        let receiptTitle;
         let receiptInfo = ``;
         for(let key in this.dishes) {
             const dish = this.dishes;
@@ -53,7 +46,6 @@ class CaloriesCalculator {
                 receiptInfo += `    * ${value[0]}, ${value[1] * dish[key][0]}гр, ${value[2] * dish[key][0]}ккал \n`
             });
             receiptInfo += `\n`;
-            // console.log(ingr);
         }
         return`
 ========================================
@@ -72,15 +64,24 @@ const soup = new Product('Соль', 2);
 
 const plov = new Dish('Плов');
 
+const cotl = new Dish('Котлеты');
+
+plov.addProduct(meat, 100);
 plov.addProduct(meat, 100);
 plov.addProduct(rice, 150);
 plov.addProduct(onion, 25);
 plov.addProduct(carrot, 25);
 
+cotl.addProduct(meat, 100);
+
 const calculator = new CaloriesCalculator();
 calculator.addDish(plov);
 calculator.addDish(plov);
 calculator.addDish(plov);
+calculator.addDish(cotl);
+calculator.addDish(cotl);
+calculator.addDish(cotl);
+calculator.addDish(cotl);
 
 const totals = calculator.getAllDishesInfo();
 console.log(totals);
